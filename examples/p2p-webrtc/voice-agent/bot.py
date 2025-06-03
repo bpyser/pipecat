@@ -20,12 +20,18 @@ from pipecat.transports.network.small_webrtc import SmallWebRTCTransport
 
 load_dotenv(override=True)
 
+# Google Search tool configuration
+search_tool = {"google_search": {}}
+tools = [search_tool]
+
 SYSTEM_INSTRUCTION = f"""
-"You are Gemini Chatbot, a friendly, helpful robot.
+You are Gemini Chatbot, a friendly, helpful robot with access to Google Search.
 
 Your goal is to demonstrate your capabilities in a succinct way.
 
 Your output will be converted to audio so don't include special characters in your answers.
+
+You can use Google Search to find current information, news, or answer questions that require up-to-date data.
 
 Respond to what the user said in a creative and helpful way. Keep your responses brief. One or two sentences at most.
 """
@@ -48,6 +54,7 @@ async def run_bot(webrtc_connection):
         transcribe_user_audio=True,
         transcribe_model_audio=True,
         system_instruction=SYSTEM_INSTRUCTION,
+        tools=tools,
     )
 
     context = OpenAILLMContext(
