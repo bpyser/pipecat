@@ -14,6 +14,7 @@ import uvicorn
 from bot import run_bot
 from dotenv import load_dotenv
 from fastapi import BackgroundTasks, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from loguru import logger
 
@@ -23,6 +24,15 @@ from pipecat.transports.network.webrtc_connection import IceServer, SmallWebRTCC
 load_dotenv(override=True)
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # For development - allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Store connections by pc_id
 pcs_map: Dict[str, SmallWebRTCConnection] = {}
